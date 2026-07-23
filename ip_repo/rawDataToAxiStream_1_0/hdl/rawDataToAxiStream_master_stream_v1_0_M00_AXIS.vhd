@@ -16,8 +16,9 @@ entity rawDataToAxiStream_master_stream_v1_0_M00_AXIS is
 	);
 	port (
 		-- Users to add ports here
-        dataIn    : in std_logic_vector(rawDataSize-1 downto 0);
-        write     : in std_logic;
+        dataIn    : in  std_logic_vector(rawDataSize-1 downto 0);
+        write     : in  std_logic;
+        busy      : out std_logic;
 		-- User ports ends
 		-- Do not modify the ports beyond this line
 
@@ -228,7 +229,7 @@ begin
 	   end process;                                                           
 
 	-- Add user logic here
-
+    busy <= '0' when ((mst_exec_state = IDLE) and (M_AXIS_TREADY = '1')) else '1';
 	-- User logic ends
 
 end implementation;

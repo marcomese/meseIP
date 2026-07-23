@@ -18,7 +18,7 @@ entity rawDataToAxiStream is
 		-- Users to add ports here
         dataIn    : in std_logic_vector(rawDataSize-1 downto 0);
         write     : in std_logic;
-		dataReady : out std_logic;
+		busy      : out std_logic;
 		-- User ports ends
 		-- Do not modify the ports beyond this line
 
@@ -44,8 +44,9 @@ architecture arch_imp of rawDataToAxiStream is
 		C_M_START_COUNT	: integer	:= 32
 		);
 		port (
-        dataIn    : in std_logic_vector(rawDataSize-1 downto 0);
-        write     : in std_logic;
+        dataIn    : in  std_logic_vector(rawDataSize-1 downto 0);
+        write     : in  std_logic;
+        busy      : out std_logic;
 		M_AXIS_ACLK	: in std_logic;
 		M_AXIS_ARESETN	: in std_logic;
 		M_AXIS_TVALID	: out std_logic;
@@ -70,6 +71,7 @@ rawDataToAxiSteam_master_stream_v1_0_M00_AXIS_inst : rawDataToAxiStream_master_s
 	port map (
 	    dataIn => dataRegister,
 	    write  => write,
+	    busy   => busy,
 		M_AXIS_ACLK	=> m00_axis_aclk,
 		M_AXIS_ARESETN	=> m00_axis_aresetn,
 		M_AXIS_TVALID	=> m00_axis_tvalid,
@@ -80,7 +82,6 @@ rawDataToAxiSteam_master_stream_v1_0_M00_AXIS_inst : rawDataToAxiStream_master_s
 	);
 
 	-- Add user logic here
-    dataReady <= m00_axis_tready;
     
     loadDataReg: process(m00_axis_aclk, m00_axis_aresetn, write)
     begin
